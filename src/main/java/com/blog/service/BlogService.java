@@ -2,7 +2,9 @@ package com.blog.service;
 
 import com.blog.domain.Article;
 import com.blog.dto.AddArticleRequest;
+import com.blog.dto.UpdateArticleRequest;
 import com.blog.repository.BlogRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ public class BlogService {
         return blogRepository.findAll();
     }
 
-    public Article findById(Long id) {
+    public Article findById(long id) {
         return blogRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(id + " 번 째 글을 찾을 수 없습니다."));
     }
@@ -32,7 +34,13 @@ public class BlogService {
         blogRepository.deleteById(id);
     }
 
-    public void update(Long id) {
+    @Transactional
+    public Article update(long id, UpdateArticleRequest request) {
+        Article article = blogRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(id +  "번 째 글을 찾을 수 없습니다."));
 
+        article.update(request.getTitle(), request.getContent());
+
+        return article;
     }
 }
