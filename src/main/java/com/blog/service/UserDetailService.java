@@ -4,7 +4,6 @@ import com.blog.domain.User;
 import com.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -15,7 +14,8 @@ public class UserDetailService implements UserDetailsService {  // 스프링 시
 
     // 사용자 이름(email)으로 사용자의 정보를 가져오는 메소드
     @Override
-    public User loadUserByUsername(String email) throws UsernameNotFoundException {
+    public User loadUserByUsername(String email) {
+        System.out.println("email = " + email);
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException(email));
     }

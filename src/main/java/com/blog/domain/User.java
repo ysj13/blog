@@ -58,20 +58,20 @@ public class User implements UserDetails {  // UserDetails : 스프링 시큐리
     public boolean isAccountNonLocked() {
         // 계정이 잠겼는지 확인하는 로직 추가
         // true : 잠금되지 않았음
-        return false;
+        return true;
     }
 
     @Override   // 패스워드의 만료 여부 반환
     public boolean isCredentialsNonExpired() {
         // 패스워드가 만료되었는지 확인하는 로직
         // true : 만료되지 않았음
-        return false;
+        return true;
     }
 
     @Override   // 계정 사용 가능 여부 반환
     public boolean isEnabled() {
         // 계정이 사용 가능한지 확인하는 로직
         // true : 사용 가능
-        return false;
+        return true;
     }
 }
