@@ -3,12 +3,8 @@ package com.blog.util;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.util.Base64Utils;
 import org.springframework.util.SerializationUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.Base64;
 
 public class CookieUtil {
@@ -41,11 +37,11 @@ public class CookieUtil {
     }
 
     // 쿠키를 역직렬화해 객체로 변환
-    public static <T> T deserialize(Cookie cookie, Class<T> tClass) throws IOException, ClassNotFoundException {
-        byte[] decodedBytes = Base64Utils.decodeFromString(cookie.getValue());
-        ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decodedBytes));
-        Object deserializedObject = objectInputStream.readObject();
-
-        return tClass.cast(deserializedObject);
+    public static <T> T deserialize(Cookie cookie, Class<T> tClass) {
+        return tClass.cast(
+                SerializationUtils.deserialize(
+                        Base64.getUrlDecoder().decode(cookie.getValue())
+                )
+        );
     }
 }
